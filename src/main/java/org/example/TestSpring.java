@@ -1,31 +1,20 @@
 package org.example;
-
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-
 public class TestSpring {
     public static void main(String[] args) {
         ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(
                 "applicationContext.xml"
         );
+        Music classicalMusic = context.getBean("classicalMusic", Music.class);
+        Music rockMusic = context.getBean("rockMusic", Music.class);
+        Music rapMusic = context.getBean("rapMusic", Music.class);
+        MusicPlayer firstPlayer = new MusicPlayer(classicalMusic);
+        MusicPlayer secondPlayer = new MusicPlayer(rockMusic);
+        MusicPlayer thirdPlayer = new MusicPlayer(rapMusic);
 
-        ClassicalMusic classicalMusic = context.getBean("musicBean", ClassicalMusic.class);
-        System.out.println(classicalMusic.getSong());
-
-//        Music music = context.getBean("musicBean", Music.class);
-//        MusicPlayer player = new MusicPlayer(music);
-//
-//        MusicPlayer firstPlayer = context.getBean("musicPlayer", MusicPlayer.class);
-//        MusicPlayer secondPlayer = context.getBean("musicPlayer", MusicPlayer.class);
-//
-//        boolean result = firstPlayer == secondPlayer;
-//        System.out.println("Is firstPlayer == secondPlayer? " + result);
-//
-//        System.out.println(firstPlayer);
-//        System.out.println(secondPlayer);
-//
-//        firstPlayer.setVolume(10);
-//        System.out.println(firstPlayer.getVolume());
-//        System.out.println(secondPlayer.getVolume());
+        firstPlayer.playMusic();
+        secondPlayer.playMusic();
+        thirdPlayer.playMusic();
 
         context.close();
     }
