@@ -8,14 +8,22 @@ public class TestSpring {
 
 //        MusicPlayer musicPlayer = context.getBean("musicPlayer", MusicPlayer.class);
 //        musicPlayer.playMusic();
+
 //        Computer computer = context.getBean("computer", Computer.class);
 //        System.out.println(computer);
 
+//        MusicPlayer musicPlayer = context.getBean("musicPlayer", MusicPlayer.class);
+//        MusicPlayer.MusicStyles rock = MusicPlayer.MusicStyles.ROCK;
+//        MusicPlayer.MusicStyles classical = MusicPlayer.MusicStyles.CLASSICAL;
+//        musicPlayer.playMusic(rock);
+//        musicPlayer.playMusic(classical);
+
         MusicPlayer musicPlayer = context.getBean("musicPlayer", MusicPlayer.class);
-        MusicPlayer.MusicStyles rock = MusicPlayer.MusicStyles.ROCK;
-        MusicPlayer.MusicStyles classical = MusicPlayer.MusicStyles.CLASSICAL;
-        musicPlayer.playMusic(rock);
-        musicPlayer.playMusic(classical);
+
+        ClassicalMusic classicalMusic = context.getBean("classicalMusic", ClassicalMusic.class);
+        
+        System.out.println(musicPlayer.getName());
+        System.out.println(musicPlayer.getVolume());
 
         context.close();
     }

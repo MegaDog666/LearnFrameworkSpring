@@ -2,6 +2,7 @@ package org.example;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -9,14 +10,22 @@ import java.util.List;
 
 @Component
 public class MusicPlayer {
+    @Value("${musicPlayer.name}")
+    private String name;
+    @Value("${musicPlayer.volume}")
+    private int volume;
+
+    public String getName() {
+        return name;
+    }
+
+    public int getVolume() {
+        return volume;
+    }
+
     private Music music1;
     private Music music2;
 
-    enum MusicStyles
-    {
-        CLASSICAL,
-        ROCK
-    }
 
 //    @Autowired
 //    public MusicPlayer(@Qualifier("rockMusic") Music music1,
@@ -35,11 +44,8 @@ public class MusicPlayer {
         this.music2 = music2;
     }
 
-    public void playMusic(MusicStyles musicStyles) {
-        switch (musicStyles) {
-            case CLASSICAL -> System.out.println("Playing classical music: " + music2.getSong());
-            case ROCK -> System.out.println("Playing rock music: " + music1.getSong());
-            default -> System.out.println("Error");
-        }
+    public void playMusic(Music music1, Music music2) {
+        System.out.println("Playing: " + music1.getSong());
+        System.out.println("Playing: " + music2.getSong());
     }
 }

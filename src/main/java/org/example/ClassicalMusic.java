@@ -1,15 +1,25 @@
 package org.example;
 
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import java.util.Random;
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 
 @Component
 public class ClassicalMusic implements Music {
-    static String[] listMusic = {"Hungarian Rhapsody", "Moonlight Sonata", "The Magic Flute"};
+
+    @PostConstruct
+    public void doMyInit() {
+        System.out.println("Doing my initialization");
+    }
+
+    @PreDestroy
+    public void doMyDestroy() {
+        System.out.println("Doing my destruction");
+    }
     @Override
     public String getSong() {
-        Random random = new Random();
-        return listMusic[random.nextInt(listMusic.length)];
+        return "Classical music";
     }
 }
