@@ -1,50 +1,67 @@
 package org.example.dao;
 
 import org.example.models.Person;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.jdbc.core.BatchPreparedStatementSetter;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.*;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Component
 public class PersonDAO {
-    private final JdbcTemplate jdbcTemplate;
+
+    private final SessionFactory sessionFactory;
+    private Session session;
+
     @Autowired
-    public PersonDAO(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
+    public PersonDAO(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
     }
 
+    @Transactional(readOnly = true)
     public List<Person> index() {
-        return jdbcTemplate.query("SELECT * FROM Person", new BeanPropertyRowMapper<>(Person.class));
+        session = sessionFactory.getCurrentSession();
+
+        // Здесь будет наш обычный Hibernate код
+        List<Person> people = session.createQuery("select p from Person p", Person.class).getResultList();
+
+        return people;
     }
 
     // [new Person]
     // [null]
+    @Transactional(readOnly = true)
     public Person show(int id) {
-        return jdbcTemplate.query("SELECT * FROM Person WHERE id=?", new Object[]{id}, new BeanPropertyRowMapper<>(Person.class))
-                .stream().findAny().orElse(null);
+        session = sessionFactory.getCurrentSession();
+
+        Person person = session.get(Person.class, id);
+
+        return person;
     }
 
-    public Optional<Person> show(String email) {
-        return jdbcTemplate.query("SELECT * FROM Person WHERE email=?", new Object[]{email}, new BeanPropertyRowMapper<>(Person.class))
-                .stream().findAny();
-    }
+    @Transactional
     public void save(Person person) {
-        jdbcTemplate.update("INSERT INTO Person(name, age, email, address) VALUES(?, ?, ?, ?)",
-                person.getName(), person.getAge(), person.getEmail(), person.getAddress());
+        session = sessionFactory.getCurrentSession();
+        session.save(person);
+
     }
+    @Transactional
     public void update(int id, Person updatedPerson) {
-        jdbcTemplate.update("UPDATE Person SET name=?, age=?, email=?, adress=? WHERE id=?",
-                updatedPerson.getName(), updatedPerson.getAge(), updatedPerson.getEmail(), updatedPerson.getAddress(), id);
+        session = sessionFactory.getCurrentSession();
+
+        Person person = session.get(Person.class, id);
+        person.setName(updatedPerson.getName());
+        person.setAge(updatedPerson.getAge());
+
     }
+    @Transactional
     public void delete(int id) {
-        jdbcTemplate.update("DELETE FROM Person WHERE id=?", id);
+        session = sessionFactory.getCurrentSession();
+        Person person = session.get(Person.class, id);
+        session.delete(person);
     }
 }
