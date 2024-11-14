@@ -3,6 +3,8 @@ package org.example.models;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 
+import java.util.List;
+
 @Entity
 @Table(name = "person")
 public class Person {
@@ -20,6 +22,8 @@ public class Person {
     @Column(name = "age")
     private int age;
 
+    @OneToMany(mappedBy = "owner")
+    private List<Item> items;
 
 
     public Person(String name, int age) {
@@ -56,5 +60,12 @@ public class Person {
         this.name = name;
     }
 
+    public List<Item> getItems() {
+        return items;
+    }
+
+    public void setItems(List<Item> items) {
+        this.items = items;
+    }
 
 }
