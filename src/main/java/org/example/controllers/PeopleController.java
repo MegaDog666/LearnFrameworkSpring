@@ -2,7 +2,6 @@ package org.example.controllers;
 
 import jakarta.validation.Valid;
 import org.example.models.Person;
-import org.example.services.ItemService;
 import org.example.services.PeopleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,20 +14,15 @@ import org.springframework.web.bind.annotation.*;
 public class PeopleController {
 
     private final PeopleService peopleService;
-    private final ItemService itemService;
 
     @Autowired
-    public PeopleController(PeopleService peopleService, ItemService itemService) {
+    public PeopleController(PeopleService peopleService) {
         this.peopleService = peopleService;
-        this.itemService = itemService;
     }
 
     @GetMapping()
     public String index(Model model) {
         model.addAttribute("people", peopleService.findAll());
-
-        itemService.findByItemName("Airpods");
-        itemService.findByOwner(peopleService.findAll().get(0));
 
         peopleService.test();
 
