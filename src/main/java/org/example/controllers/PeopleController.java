@@ -1,6 +1,7 @@
 package org.example.controllers;
 
 import jakarta.validation.Valid;
+import org.example.dao.PersonDAO;
 import org.example.models.Person;
 import org.example.services.PeopleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,17 +16,19 @@ public class PeopleController {
 
     private final PeopleService peopleService;
 
+    private final PersonDAO personDAO;
+
     @Autowired
-    public PeopleController(PeopleService peopleService) {
+    public PeopleController(PeopleService peopleService, PersonDAO personDAO) {
         this.peopleService = peopleService;
+        this.personDAO = personDAO;
     }
 
     @GetMapping()
     public String index(Model model) {
-        model.addAttribute("people", peopleService.findAll());
+//        model.addAttribute("people", peopleService.findAll());
 
-        peopleService.test();
-
+        personDAO.testNPlus1();
         return "people/index";
     }
     @GetMapping("/{id}")

@@ -6,6 +6,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "person")
@@ -24,9 +25,8 @@ public class Person {
     @Column(name = "age")
     private int age;
 
-    @Enumerated(EnumType.ORDINAL) // EnumType.STRING - сохраняет вот так 'CALM'
-    private Mood mood;
-
+    @OneToMany(mappedBy = "owner")
+    List<Item> items;
 
     public Person(String name, int age) {
         this.name = name;
@@ -52,7 +52,13 @@ public class Person {
         this.age = age;
     }
 
+    public List<Item> getItems() {
+        return items;
+    }
 
+    public void setItems(List<Item> items) {
+        this.items = items;
+    }
 
     public String getName() {
         return name;
@@ -62,11 +68,16 @@ public class Person {
         this.name = name;
     }
 
-    public Mood getMood() {
-        return mood;
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) return true;
+        if (object == null || getClass() != object.getClass()) return false;
+        Person person = (Person) object;
+        return id == person.id && age == person.age && Objects.equals(name, person.name);
     }
 
-    public void setMood(Mood mood) {
-        this.mood = mood;
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, age);
     }
 }

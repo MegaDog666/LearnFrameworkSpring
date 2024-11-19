@@ -1,13 +1,11 @@
 package org.example.services;
 
-import org.example.models.Mood;
 import org.example.models.Person;
 import org.example.repositories.PeopleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,7 +28,6 @@ public class PeopleService {
     }
     @Transactional
     public void save(Person person) {
-        person.setMood(Mood.CALM);
         peopleRepository.save(person);
     }
     @Transactional
@@ -41,8 +38,5 @@ public class PeopleService {
     @Transactional
     public void delete(int id) {
         peopleRepository.deleteById(id);
-    }
-    public void test() {
-        System.out.println("Testing here with debug. Inside Hibernate Transtaction");
     }
 }
