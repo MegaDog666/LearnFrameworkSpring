@@ -17,20 +17,20 @@ public class Person {
     private int id;
 
     @NotEmpty(message = "Name should not be empty")
-    @Size(min = 2, max = 30, message = "Name should be between 2 and 30 characters")
-    @Column(name = "name")
-    private String name;
+    @Size(min = 2, max = 100, message = "Name should be between 2 and 30 characters")
+    @Column(name = "full_name")
+    private String fullName;
 
     @Min(value = 0, message = "Age should be greater than 0")
-    @Column(name = "age")
-    private int age;
+    @Column(name = "born_year")
+    private int bornYear;
 
     @OneToMany(mappedBy = "owner")
-    List<Item> items;
+    List<Book> books;
 
-    public Person(String name, int age) {
-        this.name = name;
-        this.age = age;
+    public Person(String fullName, int bornYear) {
+        this.fullName = fullName;
+        this.bornYear = bornYear;
     }
 
     public Person() {
@@ -44,40 +44,40 @@ public class Person {
         this.id = id;
     }
 
-    public int getAge() {
-        return age;
+    public int getBornYear() {
+        return bornYear;
     }
 
-    public void setAge(int age) {
-        this.age = age;
+    public void setBornYear(int bornYear) {
+        this.bornYear = bornYear;
     }
 
-    public List<Item> getItems() {
-        return items;
+    public List<Book> getBooks() {
+        return books;
     }
 
-    public void setItems(List<Item> items) {
-        this.items = items;
+    public void setBooks(List<Book> books) {
+        this.books = books;
     }
 
-    public String getName() {
-        return name;
+    public String getFullName() {
+        return fullName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 
-    @Override
-    public boolean equals(Object object) {
-        if (this == object) return true;
-        if (object == null || getClass() != object.getClass()) return false;
-        Person person = (Person) object;
-        return id == person.id && age == person.age && Objects.equals(name, person.name);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, name, age);
-    }
+//    @Override
+//    public boolean equals(Object object) {
+//        if (this == object) return true;
+//        if (object == null || getClass() != object.getClass()) return false;
+//        Person person = (Person) object;
+//        return id == person.id && age == person.age && Objects.equals(name, person.name);
+//    }
+//
+//    @Override
+//    public int hashCode() {
+//        return Objects.hash(id, name, age);
+//    }
 }

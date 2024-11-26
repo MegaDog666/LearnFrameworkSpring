@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import org.example.dao.PersonDAO;
 import org.example.models.Person;
 import org.example.services.PeopleService;
+import org.example.util.PersonValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,25 +17,29 @@ public class PeopleController {
 
     private final PeopleService peopleService;
 
-    private final PersonDAO personDAO;
+    private final PersonValidator personValidator;
+
+//    private final PersonDAO personDAO;
 
     @Autowired
-    public PeopleController(PeopleService peopleService, PersonDAO personDAO) {
+    public PeopleController(PeopleService peopleService, PersonValidator personValidator) {
         this.peopleService = peopleService;
-        this.personDAO = personDAO;
+        this.personValidator = personValidator;
+
     }
 
     @GetMapping()
     public String index(Model model) {
-//        model.addAttribute("people", peopleService.findAll());
+        model.addAttribute("people", peopleService.findAll());
 
-        personDAO.testNPlus1();
+//        personDAO.testNPlus1();
         return "people/index";
     }
     @GetMapping("/{id}")
     public String show(@PathVariable("id") int id,
                        Model model) {
         model.addAttribute("person", peopleService.findOne(id));
+        model.addAttribute("books", peopleService.getBooksByPersonId(id));
         return "people/show";
     }
 
@@ -45,6 +50,7 @@ public class PeopleController {
     @PostMapping()
     public String create(@ModelAttribute("person") @Valid Person person,
                          BindingResult bindingResult) {
+        personValidator.validate(person, bindingResult);
 
         if (bindingResult.hasErrors())
             return "people/new";

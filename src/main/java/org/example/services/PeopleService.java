@@ -1,5 +1,6 @@
 package org.example.services;
 
+import org.example.models.Book;
 import org.example.models.Person;
 import org.example.repositories.PeopleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,4 +40,13 @@ public class PeopleService {
     public void delete(int id) {
         peopleRepository.deleteById(id);
     }
+
+    public List<Book> getBooksByPersonId(int id) {
+        return peopleRepository.getBooksById(id);
+    }
+
+    public Optional<Person> getPersonByFullName(String fullName) {
+        return peopleRepository.getPersonByFullName(fullName);
+    }
+
 }
