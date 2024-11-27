@@ -4,7 +4,10 @@ import org.example.dao.BookDAO;
 import org.example.models.Book;
 import org.example.models.Person;
 import org.example.repositories.BookRepository;
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -64,4 +67,20 @@ public class BookService {
     public void release(int id) {
         bookDAO.release(id);
     }
+
+    public List<Book> getSortedByYear() {
+        return bookRepository.findAll(Sort.by("year"));
+    }
+
+    public List<Book> findWithPagination(int page, int size) {
+        return bookRepository.findAll(PageRequest.of(page, size)).getContent();
+    }
+
+    public List<Book> findWithPaginationAndSorting(int page, int size) {
+        return bookRepository.findAll(PageRequest.of(page, size, Sort.by("year"))).getContent();
+    }
+
+//    public Book findByTitleStartingWith(String searchBook) {
+//        return bookRepository.findByTitleStartingWith(searchBook);
+//    }
 }

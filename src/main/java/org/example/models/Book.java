@@ -11,11 +11,11 @@ public class Book {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @NotEmpty(message = "Title must not be empty")
-    @Size(min = 2, max = 30, message = "Title must be between 2 and 30 characters")
+    @Size(min = 2, max = 100, message = "Title must be between 2 and 100 characters")
     @Column(name = "title")
     private String title;
     @NotEmpty(message = "Author must not be empty")
-    @Size(min = 2, max = 30, message = "Author must be between 2 and 30 characters")
+    @Size(min = 2, max = 100, message = "Author must be between 2 and 100 characters")
     @Column(name = "author")
     private String author;
     @NotNull(message = "Year must not be null")
