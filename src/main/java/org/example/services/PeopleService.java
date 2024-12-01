@@ -48,5 +48,4 @@ public class PeopleService {
     public Optional<Person> getPersonByFullName(String fullName) {
         return peopleRepository.getPersonByFullName(fullName);
     }
-
 }

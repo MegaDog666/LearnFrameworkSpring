@@ -3,6 +3,8 @@ package org.example.models;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Table(name = "book")
 public class Book {
@@ -23,6 +25,10 @@ public class Book {
     @Max(value = 2100, message = "Year must be less than 2100")
     @Column(name = "year")
     private int year;
+
+    @Column(name = "borrowed_at")
+    private LocalDateTime borrowedAt;
+
 
     @ManyToOne
     @JoinColumn(name = "person_id", referencedColumnName = "id")
@@ -67,5 +73,21 @@ public class Book {
 
     public void setYear(int year) {
         this.year = year;
+    }
+
+    public Person getOwner() {
+        return owner;
+    }
+
+    public void setOwner(Person owner) {
+        this.owner = owner;
+    }
+
+    public LocalDateTime getBorrowedAt() {
+        return borrowedAt;
+    }
+
+    public void setBorrowedAt(LocalDateTime borrowedAt) {
+        this.borrowedAt = borrowedAt;
     }
 }

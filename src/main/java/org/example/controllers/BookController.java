@@ -1,13 +1,11 @@
 package org.example.controllers;
 
 import jakarta.validation.Valid;
-import org.example.dao.PersonDAO;
 import org.example.models.Book;
 import org.example.models.Person;
 import org.example.services.BookService;
 import org.example.services.PeopleService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -36,7 +34,6 @@ public class BookController {
                         @RequestParam(value = "sort_by_year", required = false) boolean sortByYear,
                         @RequestParam(value = "page", required = false) Integer page,
                         @RequestParam(value = "book_per_page", required = false) Integer booksPerPage) {
-        List<Book> books;
 
         if (page != null && booksPerPage != null && sortByYear)
             model.addAttribute("books", booksService.findWithPaginationAndSorting(page, booksPerPage));
@@ -109,14 +106,10 @@ public class BookController {
         return "redirect:/books/" + id;
     }
 
-//    @GetMapping("/search")
-//    public String search(@RequestParam(value = "query", required = false) String query, Model model) {
-//
-//        if (query != null && !query.trim().isEmpty()) {
-//            model.addAttribute("books", booksService.findByTitleStartingWith(query));
-//        } else {
-//            model.addAttribute("books", booksService.findAll());
-//        }
-//        return "books/search";
-//    }
+    @GetMapping("/search")
+    public String search(Model model, @RequestParam(value = "title", required = false) String title) {
+        model.addAttribute("books", booksService.findByTitleStartingWith(title));
+        return "books/search";
+    }
+
 }

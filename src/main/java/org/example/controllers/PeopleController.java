@@ -1,8 +1,9 @@
 package org.example.controllers;
 
 import jakarta.validation.Valid;
-import org.example.dao.PersonDAO;
+import org.example.models.Book;
 import org.example.models.Person;
+import org.example.services.BookService;
 import org.example.services.PeopleService;
 import org.example.util.PersonValidator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/people")
@@ -19,27 +23,33 @@ public class PeopleController {
 
     private final PersonValidator personValidator;
 
+    private final BookService bookService;
+
 //    private final PersonDAO personDAO;
 
     @Autowired
-    public PeopleController(PeopleService peopleService, PersonValidator personValidator) {
+    public PeopleController(PeopleService peopleService, PersonValidator personValidator, BookService bookService) {
         this.peopleService = peopleService;
         this.personValidator = personValidator;
-
+        this.bookService = bookService;
     }
 
     @GetMapping()
     public String index(Model model) {
         model.addAttribute("people", peopleService.findAll());
-
-//        personDAO.testNPlus1();
         return "people/index";
     }
     @GetMapping("/{id}")
     public String show(@PathVariable("id") int id,
                        Model model) {
+        List<Book> books = peopleService.getBooksByPersonId(id);
+        List<Boolean> overdueList = books.stream()
+                .map(book -> bookService.isOverdue(book.getId()))
+                .collect(Collectors.toList());
+
         model.addAttribute("person", peopleService.findOne(id));
-        model.addAttribute("books", peopleService.getBooksByPersonId(id));
+        model.addAttribute("books", books);
+        model.addAttribute("overdue", overdueList);
         return "people/show";
     }
 

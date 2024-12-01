@@ -17,8 +17,13 @@
     <hr/>
     <b>Books:</b>
     <br/>
-    <table th:each="book : ${books}">
-        <tr th:text="${book.getTitle() + ', ' + book.getAuthor() + ', ' + book.getYear()}">book</tr>
+    <table th:each="book, iter : ${books}">
+        <div th:if="${overdue[__${iter.index}__]}">
+            <p th:style="'color: red'" th:text="${book.getTitle() + ', ' + book.getAuthor() + ', ' + book.getYear()}"></p>
+        </div>
+        <div th:unless="${overdue[__${iter.index}__]}">
+            <p th:text="${book.getTitle() + ', ' + book.getAuthor() + ', ' + book.getYear()}"></p>
+        </div>
     </table>
     <hr/>
 </div>

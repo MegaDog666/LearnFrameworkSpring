@@ -5,6 +5,8 @@ import org.example.models.Person;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
+
 @Component
 public class BookDAO {
 
@@ -16,14 +18,19 @@ public class BookDAO {
     }
 
     public void assign(int bookId, Person selectedPerson) {
-        entityManager.createNativeQuery("UPDATE book SET person_id = ? WHERE id = ?")
+        LocalDateTime now = LocalDateTime.now();
+
+        entityManager.createNativeQuery("UPDATE book SET person_id = ?, borrowed_at = ? WHERE id = ?")
                 .setParameter(1, selectedPerson.getId())
-                .setParameter(2, bookId)
+                .setParameter(2, now)
+                .setParameter(3, bookId)
                 .executeUpdate();
     }
 
     public void release(int id) {
-        entityManager.createNativeQuery("UPDATE book SET person_id = NULL WHERE id = ?")
+        LocalDateTime now = LocalDateTime.now();
+
+        entityManager.createNativeQuery("UPDATE book SET person_id = NULL, borrowed_at = null WHERE id = ?")
                 .setParameter(1, id)
                 .executeUpdate();
     }
